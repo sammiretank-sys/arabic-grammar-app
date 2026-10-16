@@ -23,8 +23,8 @@ if st.button("إعراب وتحليل النص"):
         with st.spinner("جاري تحليل الإعراب والقواعد..."):
             prompt = f"قم بإعراب الجملة التالية إعراباً تفصيلياً كاملاً مع توضيح القواعد النحوية: {user_input}"
             
-            # استخدام الرابط المباشر مع مفتاح كـ query parameter
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={key}"
+            # تحديث اسم النموذج إلى النموذج المعتمد والجديد
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
             
             payload = {
                 "contents": [{"parts": [{"text": prompt}]}]
