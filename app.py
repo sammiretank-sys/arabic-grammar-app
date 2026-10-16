@@ -1,6 +1,6 @@
+import os
 import streamlit as st
 from google import genai
-from google.genai import types
 
 st.set_page_config(
     page_title="مساعد اللغة العربية والإعراب",
@@ -25,16 +25,11 @@ if st.button("إعراب وتحليل النص"):
     else:
         with st.spinner("جاري تحليل الإعراب والقواعد..."):
             try:
-                # دعم مفاتيح AQ المباشرة ومفاتيح AIzaSy
-                if key.startswith("AQ"):
-                    # إذا كان المفتاح يبدأ بـ AQ، نقوم بتهيئته عبر headers لمنع تعارض البروتوكول
-                    client = genai.Client(
-                        http_options=types.HttpOptions(
-                            headers={"Authorization": f"Bearer {key}"}
-                        )
-                    )
-                else:
-                    client = genai.Client(api_key=key)
+                # تعيين المفتاح كمتبيئة نظام مؤقتة لضمان قراءته من المكتبة مباشرة
+                os.environ["GEMINI_API_KEY"] = key
+                
+                # تهيئة العميل بالطريقة القياسية
+                client = genai.Client()
                 
                 prompt = f"قم بإعراب الجملة التالية إعراباً تفصيلياً كاملاً مع توضيح القواعد النحوية: {user_input}"
                 
