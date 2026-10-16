@@ -23,24 +23,17 @@ if st.button("إعراب وتحليل النص"):
         with st.spinner("جاري تحليل الإعراب والقواعد..."):
             prompt = f"قم بإعراب الجملة التالية إعراباً تفصيلياً كاملاً مع توضيح القواعد النحوية: {user_input}"
             
-            # إعداد الطلب
-            url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+            # استخدام الرابط المباشر مع مفتاح كـ query parameter
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={key}"
             
             payload = {
                 "contents": [{"parts": [{"text": prompt}]}]
             }
             
             headers = {"Content-Type": "application/json"}
-            
-            # إذا كان المفتاح ينتهي/يبدأ بـ AQ يتم إرساله كـ Bearer
-            if key.startswith("AQ"):
-                headers["Authorization"] = f"Bearer {key}"
-                params = {}
-            else:
-                params = {"key": key}
 
             try:
-                response = requests.post(url, json=payload, headers=headers, params=params)
+                response = requests.post(url, json=payload, headers=headers)
                 data = response.json()
 
                 if response.status_code == 200:
@@ -50,8 +43,6 @@ if st.button("إعراب وتحليل النص"):
                 else:
                     error_msg = data.get('error', {}).get('message', 'حدث خطأ غير معروف')
                     st.error(f"خطأ من الخدمة ({response.status_code}): {error_msg}")
-                    if "UNAUTHENTICATED" in str(data) or "401" in str(response.status_code):
-                        st.info("ملاحظة: ينصح باستخدام مفتاح يبدأ بـ AIzaSy من Google AI Studio.")
                         
             except Exception as e:
                 st.error(f"حدث خطأ أثناء الاتصال بالخدمة: {str(e)}")
