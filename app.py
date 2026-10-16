@@ -20,7 +20,7 @@ if not api_key:
 
 # إعداد نموذج الذكاء الاصطناعي
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-2.5-flash')
+model = genai.GenerativeModel('gemini-3.8-flash')
 # إدخال النص من المستخدم
 user_input = st.text_area("أدخل الجملة أو النص المراد إعرابه:")
 
