@@ -10,14 +10,14 @@ st.set_page_config(
 st.title("مساعد النحو والإعراب الذكي 📚")
 st.write("هذا التطبيق مخصص لمساعدتك في إعراب الجمل العربية وتحليلها بدقة عالية باستخدام الذكاء الاصطناعي.")
 
-# Retrieve key from Streamlit Secrets
+# جلب المفتاح تلقائياً من Secrets
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
 except Exception:
     st.error("الرجاء إعداد مفتاح GEMINI_API_KEY في إعدادات Streamlit Secrets.")
     st.stop()
 
-# Initialize Google GenAI client with AQ key support
+# تهيئة العميل بمفتاح AQ
 client = genai.Client(api_key=api_key)
 
 user_input = st.text_area("أدخل الجملة أو النص المراد إعرابه:")
@@ -30,6 +30,7 @@ if st.button("إعراب وتحليل النص"):
             try:
                 prompt = f"قم بإعراب الجملة التالية إعراباً تفصيلياً كاملاً مع توضيح القواعد النحوية: {user_input}"
                 
+                # استخدام النموذج الرسمي الحديث
                 response = client.models.generate_content(
                     model='gemini-2.5-flash',
                     contents=prompt,
